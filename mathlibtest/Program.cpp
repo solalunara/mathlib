@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string>
-#include "Structures.h"
+#include "Mathlib_Interface.h"
+
 
 
 int main()
 {
-	Complex c = 1 + 2i;
+	Complex c = pow( 8 + 5i, 3 - 2i );
 	std::cout << c.ToString() << std::endl;
 }

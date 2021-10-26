@@ -46,6 +46,7 @@ public:
 	}
 };
 
+
 class MATH_API Complex
 {
 public:
