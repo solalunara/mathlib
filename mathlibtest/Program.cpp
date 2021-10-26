@@ -2,7 +2,9 @@
 #include <string>
 #include "Structures.h"
 
+
 int main()
 {
-	Vector v( 0, 1, 0 );
+	Complex c = 1 + 2i;
+	std::cout << c.ToString() << std::endl;
 }
