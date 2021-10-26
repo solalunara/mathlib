@@ -5,6 +5,7 @@
 #include "Definitions.h"
 #include <vector>
 #include <string>
+#include <functional>
 
 
 class MATH_API Vector
@@ -30,20 +31,6 @@ public:
 		}
 	}
 
-	Vector operator +( Vector &a )
-	{
-		Vector r;
-		for ( int i = 0; i < 3; ++i )
-			r[ i ] = a[ i ] + ( *this )[ i ];
-		return r;
-	}
-	Vector operator -( Vector &a )
-	{
-		Vector r;
-		for ( int i = 0; i < 3; ++i )
-			r[ i ] = a[ i ] - ( *this )[ i ];
-		return r;
-	}
 };
 
 
@@ -64,8 +51,37 @@ MATH_API Complex operator -( Complex a, Complex b );
 MATH_API Complex operator *( Complex a, Complex b );
 MATH_API Complex operator /( Complex a, Complex b );
 
+MATH_API void operator +=( Complex &a, Complex b );
+MATH_API void operator -=( Complex &a, Complex b );
+MATH_API void operator *=( Complex &a, Complex b );
+MATH_API void operator /=( Complex &a, Complex b );
+
 MATH_API Complex operator "" i( long double d );
 MATH_API Complex operator "" i( unsigned long long i );
+
+class MATH_API Function
+{
+public:
+	Function( std::function<Complex(Complex)> Data );
+
+private:
+	std::function<Complex(Complex)> Data;
+
+public:
+	Complex Derivative( Complex z, Complex dz = .1 + .1i );
+	Function Derivative();
+
+	Complex Integral( Complex b, Complex a, Complex dz = .1 );
+
+	Complex Fourier( Complex w, float Infinity = 100 );
+	Function Fourier();
+
+
+	Complex operator[]( Complex z )
+	{
+		return Data( z );
+	}
+};
 
 
 #endif

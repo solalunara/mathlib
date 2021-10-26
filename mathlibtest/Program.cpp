@@ -1,11 +1,12 @@
 #include <iostream>
-#include <string>
 #include "Mathlib_Interface.h"
-
 
 
 int main()
 {
-	Complex c = pow( 8 + 5i, 3 - 2i );
-	std::cout << c.ToString() << std::endl;
+	Function f( []( Complex z ) 
+	{ 
+		return epow( 0-( z * z ) ) * sin( z.a );
+	} );
+	std::cout << f.Fourier( 1, 1000000 ).ToString() << std::endl;
 }
