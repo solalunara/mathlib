@@ -2,20 +2,23 @@
 #define STRUCTURES_H
 #pragma once
 
-#ifdef MATHLIB_EXPORTS
-#define MATH_API __declspec( dllexport )
-#else
-#define MATH_API __declspec( dllimport )
-#endif
+#include "Definitions.h"
+#include <vector>
 
-struct Vector
+
+class MATH_API Vector
 {
-	
+public:
+	Vector();
+	Vector( float x, float y, float z );
+
+private:
 	float x;
 	float y;
 	float z;
 
-	float &operator[]( const int i )
+public:
+	float &operator[]( int i )
 	{
 		switch ( i )
 		{
@@ -25,14 +28,15 @@ struct Vector
 				return y;
 			case 2:
 				return z;
-			default:
-				return -1;
 		}
 	}
 
-	Vector operator +( const Vector &a, const Vector &b )
+	Vector operator +( Vector &a )
 	{
-
+		Vector r;
+		for ( int i = 0; i < 3; ++i )
+			r[ i ] = a[ i ] + (*this)[ i ];
+		return r;
 	}
 };
 
