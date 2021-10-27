@@ -4,9 +4,18 @@
 
 int main()
 {
-	Function f( []( Complex z ) 
+	Function ZW = Function( []( Complex z ) 
 	{ 
-		return epow( 0-( z * z ) ) * sin( z.a );
+		return 1 / ( 2 * pi * i * z - 1 );
 	} );
-	std::cout << f.Fourier( 1, 1000000 ).ToString() << std::endl;
+	Function zx = ZW.InverseFourier();
+	Function xx = Function( []( Complex z )
+	{
+		return z;
+	} );
+
+	Function yx = xx.Convolution( zx );
+
+
+	std::cout << yx[ 0 ].ToString() << std::endl;
 }

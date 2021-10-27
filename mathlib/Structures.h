@@ -8,44 +8,22 @@
 #include <functional>
 
 
-class MATH_API Vector
-{
-public:
-	Vector();
-	Vector( float x, float y, float z );
-
-	float x;
-	float y;
-	float z;
-
-	float &operator[]( int i )
-	{
-		switch ( i )
-		{
-			case 0:
-				return x;
-			case 1:
-				return y;
-			case 2:
-				return z;
-		}
-	}
-
-};
-
-
+typedef double float64;
 class MATH_API Complex
 {
 public:
-	Complex( float a, float b = 0 );
+	Complex( float64 a, float64 b = 0, float64 c = 0, float64 d = 0 );
 
-	float a;
-	float b;
-
+	float64 a;
+	float64 b;
+	float64 c;
+	float64 d;
 
 	std::string ToString();
 };
 
+MATH_API Complex operator +( Complex a );
+MATH_API Complex operator -( Complex a );
 MATH_API Complex operator +( Complex a, Complex b );
 MATH_API Complex operator -( Complex a, Complex b );
 MATH_API Complex operator *( Complex a, Complex b );
@@ -58,6 +36,10 @@ MATH_API void operator /=( Complex &a, Complex b );
 
 MATH_API Complex operator "" i( long double d );
 MATH_API Complex operator "" i( unsigned long long i );
+MATH_API Complex operator "" j( long double d );
+MATH_API Complex operator "" j( unsigned long long i );
+MATH_API Complex operator "" k( long double d );
+MATH_API Complex operator "" k( unsigned long long i );
 
 class MATH_API Function
 {
@@ -68,14 +50,17 @@ private:
 	std::function<Complex(Complex)> Data;
 
 public:
-	Complex Derivative( Complex z, Complex dz = .1 + .1i );
+	Complex Derivative( Complex z, Complex dz = .1 + .1i + .1j + .1k );
 	Function Derivative();
 
 	Complex Integral( Complex b, Complex a, Complex dz = .1 );
 
-	Complex Fourier( Complex w, float Infinity = 100 );
+	Complex Fourier( Complex w, float64 Infinity = INFINITY_DEFAULT );
 	Function Fourier();
+	Complex InverseFourier( Complex x, float64 Infinity = INFINITY_DEFAULT );
+	Function InverseFourier();
 
+	Function Convolution( Function &g, float64 Infinity = INFINITY_DEFAULT );
 
 	Complex operator[]( Complex z )
 	{

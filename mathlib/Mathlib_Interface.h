@@ -9,7 +9,7 @@
 #define i Complex( 0, 1 )
 
 MATH_API Complex epow( Complex z );
-MATH_API Complex pow( float a, Complex b );
+MATH_API Complex pow( float64 a, Complex b );
 MATH_API Complex pow( Complex a, Complex b );
 
 
