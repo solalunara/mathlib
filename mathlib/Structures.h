@@ -60,7 +60,7 @@ public:
 	Complex InverseFourier( Complex x, float64 Infinity = INFINITY_DEFAULT );
 	Function InverseFourier();
 
-	Function Convolution( Function &g, float64 Infinity = INFINITY_DEFAULT );
+	Function Convolution( Function *g, float64 Infinity = INFINITY_DEFAULT );
 
 	Complex operator[]( Complex z )
 	{

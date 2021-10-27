@@ -121,14 +121,14 @@ Function Function::InverseFourier()
 {
 	return Function( [this]( Complex z ) { return InverseFourier( z ); } );
 }
-Function Function::Convolution( Function &g, float64 Infinity /*= INFINITY_DEFAULT*/ )
+Function Function::Convolution( Function *g, float64 Infinity /*= INFINITY_DEFAULT*/ )
 {
 	//see: https://en.wikipedia.org/wiki/Convolution#Definition
-	return Function( [this, &g, Infinity]( Complex t )
+	return Function( [this, g, Infinity]( Complex t )
 	{
-		return Function( [this, &g, t]( Complex ta )
+		return Function( [this, g, t]( Complex ta )
 		{
-			return Data( ta ) * g[ t - ta ];
+			return Data( ta ) * (*g)[ t - ta ];
 		} ).Integral( -Infinity, Infinity );
 	} );
 }
