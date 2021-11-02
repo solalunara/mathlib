@@ -22,7 +22,7 @@ int main()
 	delete ZW;
 	*/
 
-	/*
+	///*
 	Function ZW = Function( []( Complex z )
 	{
 		return 1 / ( 2 * pi * i * z - 1 );
@@ -39,14 +39,15 @@ int main()
 		return XW( z ) * ZW( z );
 	} );
 
-	Function yx = YW.InverseFourier( 0 );
+	Function yx = YW.InverseFourier( 142.582114 );
 
 
-	std::cout << yx( 0 ).ToString() << std::endl;
+	std::cout << yx( 1 ).ToString() << std::endl;
 
 	delete xx;
-	*/
+	//*/
 
+	/*
 	Function f = Function( []( Complex z )
 	{
 		return sin( z.a );
@@ -57,4 +58,5 @@ int main()
 	{
 		std::cout << std::to_string( a ) + ": " << F( a ).ToString() << std::endl;
 	}
+	*/
 }

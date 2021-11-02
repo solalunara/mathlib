@@ -12,12 +12,10 @@ typedef double float64;
 class MATH_API Complex
 {
 public:
-	Complex( float64 a, float64 b = 0, float64 c = 0, float64 d = 0 );
+	Complex( float64 a, float64 b = 0 );
 
 	float64 a;
 	float64 b;
-	float64 c;
-	float64 d;
 
 	std::string ToString();
 };
@@ -37,10 +35,6 @@ MATH_API void operator /=( Complex &a, Complex b );
 #pragma warning( disable : 4455 )
 MATH_API Complex operator "" i( long double d );
 MATH_API Complex operator "" i( unsigned long long i );
-MATH_API Complex operator "" j( long double d );
-MATH_API Complex operator "" j( unsigned long long i );
-MATH_API Complex operator "" k( long double d );
-MATH_API Complex operator "" k( unsigned long long i );
 
 
 class MATH_API Line
@@ -71,7 +65,7 @@ private:
 	std::function<Complex( Complex )> Data;
 
 public:
-	Complex Derivative( Complex z, Complex dz = .1 + .1i + .1j + .1k );
+	Complex Derivative( Complex z, Complex dz = .1 + .1i );
 	Function Derivative();
 
 	Complex Integral( Line l, float b, float a, Complex C, float dz = .1 );
