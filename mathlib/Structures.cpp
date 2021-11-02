@@ -81,6 +81,12 @@ Complex operator "" k( unsigned long long i )
 	return Complex( 0, 0, 0, i );
 }
 
+Line::Line( std::function<Complex( float )> l ) : l( l )
+{
+}
+
+//this needs to be down here, otherwise you won't be able to use 'i' above (it thinks it'll be the Complex(0,1) macro)
+#include "Mathlib_Interface.h"
 
 Function::Function( std::function<Complex(Complex)> Data ) : Data( Data )
 {
@@ -93,42 +99,39 @@ Function Function::Derivative()
 {
 	return Function( [this]( Complex z ) { return Derivative( z ); } );
 }
-Complex Function::Integral( Complex b, Complex a, Complex dz /*= .1*/ )
+Complex Function::Integral( Line l, float b, float a, Complex C, float dz /*= .1*/ )
 {
-	Complex ret = 0;
-	for ( Complex i = b; i.a <= a.a && i.b <= a.b; i += dz )
+	Complex ret = C;
+	for ( float z = b; z < a; z += dz )
 	{
-		ret += dz * Data( i );
+		ret += Data( l( z ) ) * ( l( z + dz ) - l( z ) );
 	}
 	return ret;
 }
-
-//this needs to be down here, otherwise you won't be able to use 'i' above (it thinks it'll be the Complex(0,1) macro)
-#include "Mathlib_Interface.h"
-Complex Function::Fourier( Complex w, float64 Infinity /*= INFINITY_DEFAULT*/ )
+Complex Function::Fourier( Complex w, Complex C, float64 Infinity /*= INFINITY_DEFAULT*/ )
 {
-	return Function( [this, w]( Complex z ) { return Data( z ) * epow( -2 * pi * i * z * w ); } ).Integral( -Infinity, Infinity );
+	return Function( [this, w, Infinity, C]( Complex z ) { return Data( z ) * epow( -2 * pi * i * z * w / Infinity ); } ).Integral( RealLine, -Infinity, Infinity, C );
 }
-Function Function::Fourier()
+Function Function::Fourier( Complex C )
 {
-	return Function( [this]( Complex z ) { return Fourier( z ); } );
+	return Function( [this, C]( Complex z ) { return Fourier( z, C ); } );
 }
-Complex Function::InverseFourier( Complex x, float64 Infinity /*= INFINITY_DEFAULT*/ )
+Complex Function::InverseFourier( Complex x, Complex C, float64 Infinity /*= INFINITY_DEFAULT*/ )
 {
-	return Function( [this, x]( Complex z ) { return Data( z ) * epow( 2 * pi * i * z * x ); } ).Integral( -Infinity, Infinity );
+	return Function( [this, x, Infinity, C]( Complex z ) { return Data( z ) * epow( 2 * pi * i * z * x / Infinity ); } ).Integral( RealLine, -Infinity, Infinity, C );
 }
-Function Function::InverseFourier()
+Function Function::InverseFourier( Complex C )
 {
-	return Function( [this]( Complex z ) { return InverseFourier( z ); } );
+	return Function( [this, C]( Complex z ) { return InverseFourier( z, C ); } );
 }
-Function Function::Convolution( Function *g, float64 Infinity /*= INFINITY_DEFAULT*/ )
+Function Function::Convolution( Function *g, Complex C, float64 Infinity /*= INFINITY_DEFAULT*/ )
 {
 	//see: https://en.wikipedia.org/wiki/Convolution#Definition
-	return Function( [this, g, Infinity]( Complex t )
+	return Function( [this, g, Infinity, C]( Complex t )
 	{
 		return Function( [this, g, t]( Complex ta )
 		{
-			return Data( ta ) * (*g)[ t - ta ];
-		} ).Integral( -Infinity, Infinity );
+			return Data( ta ) * (*g)( t - ta );
+		} ).Integral( RealLine, -Infinity, Infinity, C );
 	} );
 }
