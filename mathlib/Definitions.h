@@ -8,6 +8,6 @@
 #define MATH_API __declspec( dllimport )
 #endif
 
-#define INFINITY_DEFAULT 200
+#define INFINITY_DEFAULT 300
 
 #endif

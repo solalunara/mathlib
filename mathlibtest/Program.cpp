@@ -39,10 +39,10 @@ int main()
 		return XW( z ) * ZW( z );
 	} );
 
-	Function yx = YW.InverseFourier( 142.582114 );
+	Function yx = YW.InverseFourier( 0 );
 
 
-	std::cout << yx( 1 ).ToString() << std::endl;
+	std::cout << yx( 0 ).ToString() << std::endl;
 
 	delete xx;
 	//*/
@@ -55,6 +55,18 @@ int main()
 	Function F = f.Fourier( 0 );
 
 	for ( float a = 0; a < 10; a += .1f )
+	{
+		std::cout << std::to_string( a ) + ": " << F( a ).ToString() << std::endl;
+	}
+	*/
+	/*
+	Function f = Function( []( Complex z )
+	{
+		return z;
+	} );
+	Function F = f.Fourier( 0 );
+
+	for ( float a = -10; a < 10; a += .1f )
 	{
 		std::cout << std::to_string( a ) + ": " << F( a ).ToString() << std::endl;
 	}
